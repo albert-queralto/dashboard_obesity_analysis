@@ -79,5 +79,7 @@ pyrightconfig.json
 *.pptx
 *.docx
 *.odt
+*.odt#
 *.csv
 *.xlsx
+*.pdf
