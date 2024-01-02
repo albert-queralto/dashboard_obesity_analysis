@@ -1,0 +1,42 @@
+<!-- The code is based on the example from https://towardsdatascience.com/https-medium-com-radecicdario-next-level-data-visualization-dashboard-app-with-bokeh-flask-c588c9398f98 -->
+{% extends 'main.html' %}
+{% block content %}
+<!-- Defines the content of page 3 -->
+<hr style="height:1px;border-width:0;color:gray;background-color:gray">
+<center><h2>Relation between Obesity and illnesses like Diabetes, Hypertension or Heart Disease by Age and Gender</h2></center>
+
+<!-- Creates a navigation bar with dropdown menus -->
+<div class="dropdown" id="dropdown-menu">
+    <form name="dropdown-form" action="" method="POST">
+        <!-- Defines the dropdown menu to select the variables for the plots -->
+        <div class="dropdown-container">
+            <label for="dropdown-variable">Select Variable:</label>
+            <select class="form-select" name="dropdown-variable" style="padding:8px;border-radius:8px;">
+                <option value="hypertension" {% if selected_variable=='hypertension' %} selected {% endif %}>High blood pressure</option>
+                <option value="heart_disease" {% if selected_variable=='heart_disease' %} selected {% endif %}>Heart disease</option>
+                <option value="diabetes" {% if selected_variable=='diabetes' %} selected {% endif %}>Diabetes</option>
+                <option value="family_history_with_overweight" {% if selected_variable=='family_history_with_overweight' %} selected {% endif %}>Family history with overweight</option>
+            </select>
+        </div>
+        <!-- Creates the submit button -->
+        <button class="submit-button" type="submit">Submit</button>
+    </form>
+</div>
+
+<!-- Defines the page structure and imports the plots generated in the backend -->
+<div class="container custom-container-sankey">
+    <div class="col-md-6">
+        <div class="custom-plot" id="sankey-plot">
+            {{ div_sankey | safe }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="custom-plot" id="crosstab-plot">
+            {{ div_crosstab | safe }}
+        </div>
+    </div>
+</div>
+
+{{ script_sankey | safe }}
+{{ script_crosstab | safe }}
+{% endblock %}
