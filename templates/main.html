@@ -1,0 +1,34 @@
+<!-- The code is based on the example from https://towardsdatascience.com/https-medium-com-radecicdario-next-level-data-visualization-dashboard-app-with-bokeh-flask-c588c9398f98 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Imports Bokeh and Boostrap libraries and CSS style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T9Nh2dHSU4uEJLtfroL4ww4A+A3ZFgyi5vJXCcMab/9TL6DqRLjzZUn8V+fbIlbf" crossorigin="anonymous">
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-3.3.2.min.css" rel="stylesheet">
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-3.3.2.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Obesity Dashboard</title>
+</head>
+<body>
+    <!-- Creates the navigation menu to switch between pages -->
+    <nav>
+        <div class="nav-wrapper">
+            <div id="nav-mobile" class="right hide-on-med-and-down">
+                <a href="/" class="nav-button">Obesity and eating habits</a>
+                <a href="/page2.html" class="nav-button">Obesity and healthy habits</a>
+                <a href="/page3.html" class="nav-button">Obesity and other illnesses</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Adds the page contents -->
+    {% block content %}
+    {% endblock %}
+    <!-- Imports Bokeh and Boostrap libraries and CSS style -->
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-3.3.2.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-3.3.2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
