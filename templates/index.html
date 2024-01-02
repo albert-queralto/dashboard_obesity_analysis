@@ -1,0 +1,71 @@
+<!-- The code is based on the example from https://towardsdatascience.com/https-medium-com-radecicdario-next-level-data-visualization-dashboard-app-with-bokeh-flask-c588c9398f98 -->
+{% extends 'main.html' %}
+{% block content %}
+<!-- Defines the content of home page -->
+<hr style="height:1px;border-width:0;color:gray;background-color:gray">
+<center><h2>Influence of Eating Habits on Obesity by Age and Gender</h2></center>
+
+<!-- Creates a navigation bar with dropdown menus -->
+<div class="dropdown" id="dropdown-menu">
+    <form name="dropdown-form" action="" method="POST">
+        <!-- Defines the dropdown menu to select the filter variables -->
+        <div class="dropdown-container">
+            <label for="dropdown-variable">Select Variable:</label>
+            <select class="form-select" name="dropdown-variable" style="padding:8px;border-radius:8px;">
+                <option value="ncp" {% if selected_variable=='ncp' %} selected {% endif %}>Number of main meals</option>
+                <option value="favc" {% if selected_variable=='favc' %} selected {% endif %}>Frequent consumption of caloric food</option>
+                <option value="gender" {% if selected_variable=='gender' %} selected {% endif %}>Gender</option>
+                <option value="caec" {% if selected_variable=='caec' %} selected {% endif %}>Eats between meals</option>
+                <option value="fcvc" {% if selected_variable=='fcvc' %} selected {% endif %}>Consumption of vegetables</option>
+                <option value="ch2o" {% if selected_variable=='ch2o' %} selected {% endif %}>Daily water consumption</option>
+            </select>
+        </div>
+        <!-- Defines the dropdown menu to select the obesity categories -->
+        <div class="dropdown-container">
+            <label for="dropdown-obesity">Select Obesity Category:</label>
+            <select class="form-select" id="dropdown-obesity" name="dropdown-obesity" style="padding:8px;border-radius:8px;">
+                <option value="Insufficient Weight" {% if selected_obesity=='Insufficient Weight' %} selected {% endif %}>Insufficient Weight</option>
+                <option value="Normal Weight" {% if selected_obesity=='Normal Weight' %} selected {% endif %}>Normal Weight</option>
+                <option value="Overweight I" {% if selected_obesity=='Overweight I' %} selected {% endif %}>Overweight I</option>
+                <option value="Overweight II" {% if selected_obesity=='Overweight II' %} selected {% endif %}>Overweight II</option>
+                <option value="Overweight III" {% if selected_obesity=='Overweight III' %} selected {% endif %}>Overweight III</option>
+            </select>
+        </div>
+        <!-- Creates the submit button -->
+        <button class="submit-button" type="submit">Submit</button>
+    </form>
+</div>
+
+<!-- Defines the page structure and imports the plots generated in the backend -->
+<div class="custom-container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="custom-plot" id="heatmap-plot">
+                {{ div_heatmap | safe }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-plot" id="barplot-plot">
+                {{ div_barplot | safe }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="custom-plot" id="lineplot-plot">
+                {{ div_lineplot | safe }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="custom-plot" id="pie-plot">
+                {{ div_pieplot | safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ script_heatmap | safe }}
+{{ script_barplot | safe }}
+{{ script_lineplot | safe }}
+{{ script_pieplot | safe }}
+{% endblock %}
