@@ -1,0 +1,49 @@
+<!-- The code is based on the example from https://towardsdatascience.com/https-medium-com-radecicdario-next-level-data-visualization-dashboard-app-with-bokeh-flask-c588c9398f98 -->
+{% extends 'main.html' %}
+{% block content %}
+<!-- Defines the content of page 2 -->
+<hr style="height:1px;border-width:0;color:gray;background-color:gray">
+<center><h2>Influence of Healthy habits on Obesity by Age and Gender</h2></center>
+
+<!-- Creates a navigation bar with dropdown menus -->
+<div class="dropdown" id="dropdown-menu">
+    <form name="dropdown-form" action="" method="POST">
+        <!-- Defines the dropdown menu to select the categorical variables -->
+        <div class="dropdown-container">
+            <label for="dropdown-categorical">Select Categorical Variable:</label>
+            <select class="form-select" name="dropdown-categorical" style="padding:8px;border-radius:8px;">
+                <option value="smoke" {% if selected_categorical=='smoke' %} selected {% endif %}>Smoking habit</option>
+                <option value="calc" {% if selected_categorical=='calc' %} selected {% endif %}>Consumption of alcohol</option>
+                <option value="gender" {% if selected_categorical=='gender' %} selected {% endif %}>Gender</option>
+                <option value="scc" {% if selected_categorical=='scc' %} selected {% endif %}>Monitors caloric consumption</option>
+                <option value="faf" {% if selected_categorical=='faf' %} selected {% endif %}>Physical activity</option>
+                <option value="tue" {% if selected_categorical=='tue' %} selected {% endif %}>Time using technology devices</option>
+                <option value="mtrans" {% if selected_categorical=='mtrans' %} selected {% endif %}>Transportation used</option>
+                <option value="age_group" {% if selected_categorical=='age_group' %} selected {% endif %}>Age group</option>
+            </select>
+        </div>
+        <!-- Defines the dropdown menu to select the binary variables -->
+        <div class="dropdown-container">
+            <label for="dropdown-binary">Select Binary Variable:</label>
+            <select class="form-select" id="dropdown-binary" name="dropdown-binary" style="padding:8px;border-radius:8px;">
+                <option value="smoke" {% if selected_binary=='smoke' %} selected {% endif %}>Smoking habit</option>
+                <option value="gender" {% if selected_binary=='gender' %} selected {% endif %}>Gender</option>
+                <option value="scc" {% if selected_binary=='scc' %} selected {% endif %}>Monitors caloric consumption</option>
+            </select>
+        </div>
+        <!-- Creates the submit button -->
+        <button class="submit-button" type="submit">Submit</button>
+    </form>
+</div>
+
+<!-- Imports the graph generated in the backend -->
+<div class="container">
+    <div class="custom-plot" id="donut-plot">
+        <center>
+            {{ div_donut | safe }}
+        </center>
+    </div>
+</div>
+
+{{ script_donut | safe }}
+{% endblock %}
