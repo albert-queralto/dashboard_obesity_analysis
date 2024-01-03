@@ -1,11 +1,11 @@
 {
     "builds": [
         {
-            "src": "dashboard.py",
+            "src": "./dashboard.py",
             "use": "@vercel/python"
         },
         {
-            "src": "static/**",
+            "src": "./static/**",
             "use": "@vercel/static"
         }
     ],
