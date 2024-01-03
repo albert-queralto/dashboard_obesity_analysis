@@ -341,7 +341,7 @@ def create_crosstab_plot(
 
     # Creates the figure
     fig = figure(
-        x_range=(-0.06, 1.05),
+        x_range=(-0.06, 1.03),
         y_range=variable_categories,
         width=width_crosstab,
         height=height_crosstab,
@@ -465,6 +465,7 @@ def create_crosstab_plot(
         text_align='center',
         text_baseline='bottom',
         text_font_size='14px',
+        text_color='white',
         angle=3*np.pi/2,
     )
 
@@ -475,11 +476,12 @@ def create_crosstab_plot(
         text_align='center',
         text_baseline='bottom',
         text_font_size='16px',
+        text_color='white',
         angle=3*np.pi/2,
     )
 
     # Adds a line to separate the two main groups
-    hline = Span(location=1, dimension='width', line_color='black', line_width=1)
+    hline = Span(location=1, dimension='width', line_color='white', line_width=1)
     fig.renderers.extend([hline])
 
     # Defines additional options
@@ -498,7 +500,7 @@ def create_crosstab_plot(
     fig.yaxis.fixed_location = 0
     fig.axis.major_tick_line_color = None
     fig.axis.major_label_text_color = None
-    fig.axis.axis_line_color = "black"
+    fig.axis.axis_line_color = "white"
     fig.axis.axis_line_width = 2
 
     return fig
