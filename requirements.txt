@@ -5,3 +5,4 @@ bokeh==3.3.2
 flask==3.0.0
 pyarrow==14.0.2
 holoviews==1.18.1
+gunicorn==21.2.0
