@@ -210,7 +210,7 @@ def create_donut_chart_plot(
     filter_variable_categories = df[filter_variable].unique().tolist()
 
     # Sets the colors for the binary_variable categories (used for the outer layer)
-    colors_list = ['#a05d2f', '#fc9957', '#fdbe94']
+    colors_list = ['#a05d2f', '#fc9957']
     binary_variable_colors = {}
     for category, color in zip(grouped_df[binary_variable].unique(), colors_list):
         binary_variable_colors[category] = color
