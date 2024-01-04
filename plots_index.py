@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from math import pi
 from itertools import cycle
@@ -11,7 +12,7 @@ from bokeh.models import (
 from bokeh.transform import factor_cmap, cumsum
 from bokeh.palettes import BuRd5, BuRd6, RdBu11
 
-from utils import break_text
+from utils import break_text, custom_scale_bars, nth_root, round_to_nearest_zero
 
 # Dictionary to map the variable names to the actual variable names
 variables_dict = {
@@ -32,6 +33,11 @@ TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 # Width and height of the plots
 width = 600
 height = 300
+
+# Value of n for the nth root
+n=4
+adjustment_factor = 3
+num_points = 6
 
 def create_heatmap_fig(
         df: pd.DataFrame, 
@@ -191,8 +197,20 @@ def create_bar_plot(
     melted_df.reset_index(inplace=True, drop=True)
     melted_df['counts'] = melted_df['counts'].fillna(0)
 
-    # Creates the y_range in log scale using the max counts
-    y_range = (0, melted_df['counts'].max() * 1.05)
+    # Transforms the counts to the custom scale
+    melted_df['scaled_counts'] = nth_root(melted_df['counts'], n)
+
+    # Sets the count limits for the y axis
+    count_limit = 20000
+    nth_root_limit = nth_root(count_limit, n)
+
+    # Creates the custom scale using the nth root
+    nth_root_scale = custom_scale_bars(
+        n=n,
+        adjustment_factor=adjustment_factor,
+        count_limit=nth_root_limit,
+        num_points=num_points
+    )
 
     # Filters the dataframe by the given obesity category
     obesity_df = melted_df[melted_df['nobeyesdad'] == obesity_category]
@@ -200,11 +218,11 @@ def create_bar_plot(
     # Creates the figure based on the filter variable (gender or another variable)
     if filter_variable == 'gender':
         x = [gender for gender in obesity_df['gender'].unique()]
-        source=ColumnDataSource(data=dict(x=x, counts=obesity_df['counts'].tolist()))
+        source=ColumnDataSource(data=dict(x=x, counts=obesity_df['counts'].tolist(), scaled_counts=obesity_df['scaled_counts'].tolist()))
         title = f'Bar Plot for {variables_dict[filter_variable]} by {obesity_category}'
         fig = figure(
             x_range=x,
-            y_range=y_range,
+            y_range=(0, nth_root_limit),
             width=width,
             height=height,
             title=f"{break_text(title, 200)}",
@@ -219,11 +237,11 @@ def create_bar_plot(
         x = [(gender, break_text(str(variable_cat), 10))
                 for gender in obesity_df['gender'].unique()
                 for variable_cat in obesity_df[filter_variable].unique()]
-        source=ColumnDataSource(data=dict(x=x, counts=obesity_df['counts'].tolist()))
+        source=ColumnDataSource(data=dict(x=x, counts=obesity_df['counts'].tolist(), scaled_counts=obesity_df['scaled_counts'].tolist()))
         title = f'Grouped Bar Plot for {variables_dict[filter_variable]} by {obesity_category}'
         fig = figure(
             x_range=FactorRange(*x),
-            y_range=y_range,
+            y_range=(0, nth_root_limit),
             width=width,
             height=height,
             title=f"{break_text(title, 200)}",
@@ -242,12 +260,18 @@ def create_bar_plot(
             factors=factors, start=1)
 
     # Creates the barplot
-    fig.vbar(x='x', top='counts', width=0.9, source=source, line_color="white",
+    fig.vbar(x='x', top='scaled_counts', width=0.9, source=source, line_color="white",
         fill_color=color_mapper)
+    
+    # Sets the y-axis ticks to values defined by the custom scale
+    # and the labels to the original unscaled values
+    fig.yaxis.ticker = nth_root_scale
+    fig.yaxis.major_label_overrides = {
+        tick: str(round_to_nearest_zero(int(np.power(tick, n)))) 
+        for tick in nth_root_scale}
 
     # Sets the properties of the figure
     fig.toolbar.autohide = True
-    fig.y_range.start = 0
     fig.x_range.range_padding = 0.1
     text_color = 'white'
     fig.xaxis.group_text_color = text_color

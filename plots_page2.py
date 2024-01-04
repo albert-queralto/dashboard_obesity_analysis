@@ -9,7 +9,6 @@ from bokeh.models import (
 )
 
 from bokeh.palettes import BuRd7
-from typing import Union
 
 from utils import break_text, scale, nth_root, custom_scale, round_to_nearest
 
