@@ -10,7 +10,7 @@ from bokeh.models import (
 
 from bokeh.palettes import BuRd7
 
-from utils import break_text, scale, nth_root, custom_scale, round_to_nearest
+from utils import break_text, scale, nth_root, custom_scale_radii, round_to_nearest
 
 # Dictionary of the variables and their actual names
 variables_dict = {
@@ -33,8 +33,9 @@ TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 width_donut = 700
 height_donut = 700
 
-# Value of n for the nth root
+# Value of n for the nth root, number of points
 n=4
+num_points = 7
 
 def create_donut_chart_plot(
         df: pd.DataFrame,
@@ -121,7 +122,10 @@ def create_donut_chart_plot(
     scale_factor = 14.2
 
     # Generates a custom scale for the counts using the nth root
-    counts = custom_scale(n=4, count_limit=count_limit, num_points=7)
+    counts = custom_scale_radii(n=n, count_limit=count_limit, num_points=num_points)
+
+    # Transforms the counts to integers
+    counts = counts.astype(int)
 
     # Rounds the counts to the nearest integer and converts them to strings
     # to be displayed in the circles

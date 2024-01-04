@@ -50,6 +50,25 @@ def round_to_nearest(value: int) -> int:
         return round(value, -int(np.log10(value)))
     elif len(str(value)) in range(4, 6):
         return round(value, -(int(np.log10(value))-1))
+    
+def round_to_nearest_zero(value: int) -> int:
+    """
+    Rounds the value to the nearest integer with a zero as the right most number.
+
+    Parameters:
+    -----------
+    value: int
+        Value to be rounded.
+
+    Returns:
+    --------
+    int
+        Rounded value.
+    """
+    if len(str(value)) == 1:
+        return value
+    else:
+        return round(value, -1)
 
 def scale(
         value: int,
@@ -103,7 +122,7 @@ def nth_root(value: int, n: int) -> float:
     """
     return np.power(value, 1/n)
 
-def custom_scale(n: int, count_limit: int, num_points: int) -> np.ndarray:
+def custom_scale_radii(n: int, count_limit: int, num_points: int) -> np.ndarray:
     """
     Generates a custom scale for the donut chart using the nth root.
 
@@ -128,6 +147,42 @@ def custom_scale(n: int, count_limit: int, num_points: int) -> np.ndarray:
     scaled_values = np.power(scaled_values, n)
 
     # Scales the values to the count_limit
-    scaled_values = scaled_values / np.max(scaled_values) * count_limit
+    return scaled_values / np.max(scaled_values) * count_limit
 
-    return scaled_values.astype(int)
+def custom_scale_bars(
+        n: int,
+        adjustment_factor: float,
+        count_limit: int,
+        num_points: int
+    ) -> np.ndarray:
+    """
+    Generates a custom scale for the bar chart using the nth root.
+
+    Parameters:
+    -----------
+    n: int
+        Value of n for the nth root.
+    adjustment_factor: float
+        Value to be applied to the scale to provide more values
+        to the lower range of the data.
+    count_limit: int
+        Maximum value of the scale.
+    num_points: int
+        Number of points to be generated.
+
+    Returns:
+    --------
+    np.ndarray
+        Generated scaled values.
+    """
+    # Generates a list of values between 0 and 1
+    scaled_values = np.linspace(0, 1, num=num_points, endpoint=True)
+
+    # Adjusts the scale to give more weight to the lower values
+    scaled_values = np.power(scaled_values, adjustment_factor)
+
+    # Raises the values to the nth power
+    scaled_values = np.power(scaled_values, 1/n)
+
+    # Scales the values to the count_limit
+    return scaled_values / np.max(scaled_values) * count_limit

@@ -34,7 +34,7 @@ TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 width = 600
 height = 300
 
-# Value of n for the nth root
+# Value of n for the nth root, adjustment factor, number of points
 n=4
 adjustment_factor = 3
 num_points = 6
