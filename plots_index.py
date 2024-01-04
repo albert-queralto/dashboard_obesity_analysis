@@ -11,6 +11,8 @@ from bokeh.models import (
 from bokeh.transform import factor_cmap, cumsum
 from bokeh.palettes import BuRd5, BuRd6, RdBu11
 
+from utils import break_text
+
 # Dictionary to map the variable names to the actual variable names
 variables_dict = {
     'favc': 'Frequent consumption of caloric food',
@@ -30,34 +32,6 @@ TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 # Width and height of the plots
 width = 600
 height = 300
-
-def break_text(text: str, max_length: int) -> str:
-    """
-    Breaks the text into two lines if the length of the text is greater than
-    the max_length.
-
-    Parameters:
-    -----------
-    text: str
-        Text to be broken into two lines.
-    max_length: int
-
-    Returns:
-    --------
-    str
-        Text broken into two lines.
-    """
-    if len(text) <= max_length:
-        return text
-    else:
-        break_index = text.rfind(' ', 0, max_length)
-        if break_index == -1:
-            break_index = max_length
-
-        line1 = text[:break_index].strip()
-        line2 = text[break_index:].strip()
-
-        return f"{line1}\n{line2}"
 
 def create_heatmap_fig(
         df: pd.DataFrame, 
@@ -103,7 +77,7 @@ def create_heatmap_fig(
     # Creates a color mapper for the heatmap based on the max counts
     mapper = LogColorMapper(
         palette=RdBu11, 
-        low=1, high=category_df['counts'].max()
+        low=1, high=melted_df['counts'].max()
     )
 
     # Creates the x and y ranges for the heatmap
@@ -217,6 +191,9 @@ def create_bar_plot(
     melted_df.reset_index(inplace=True, drop=True)
     melted_df['counts'] = melted_df['counts'].fillna(0)
 
+    # Creates the y_range in log scale using the max counts
+    y_range = (0, melted_df['counts'].max() * 1.05)
+
     # Filters the dataframe by the given obesity category
     obesity_df = melted_df[melted_df['nobeyesdad'] == obesity_category]
 
@@ -227,6 +204,7 @@ def create_bar_plot(
         title = f'Bar Plot for {variables_dict[filter_variable]} by {obesity_category}'
         fig = figure(
             x_range=x,
+            y_range=y_range,
             width=width,
             height=height,
             title=f"{break_text(title, 200)}",
@@ -245,6 +223,7 @@ def create_bar_plot(
         title = f'Grouped Bar Plot for {variables_dict[filter_variable]} by {obesity_category}'
         fig = figure(
             x_range=FactorRange(*x),
+            y_range=y_range,
             width=width,
             height=height,
             title=f"{break_text(title, 200)}",

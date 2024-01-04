@@ -4,12 +4,13 @@ import holoviews as hv
 from holoviews import opts
 hv.extension('bokeh')
 
-from itertools import cycle
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, LogAxis, Span, HoverTool
 from bokeh.transform import factor_cmap, cumsum
 
 from bokeh.palettes import BuRd5, BuRd7
+
+from utils import break_text
 
 # Dictionary of the variables and their actual names
 variables_dict = {
@@ -32,34 +33,6 @@ height_crosstab = 550
 width_sankey = 800
 height_sankey = 600
 
-
-def break_text(text: str, max_length: int) -> str:
-    """
-    Breaks the text into two lines if the length of the text is greater than
-    the max_length.
-
-    Parameters:
-    -----------
-    text: str
-        Text to be broken into two lines.
-    max_length: int
-
-    Returns:
-    --------
-    str
-        Text broken into two lines.
-    """
-    if len(text) <= max_length:
-        return text
-    else:
-        break_index = text.rfind(' ', 0, max_length)
-        if break_index == -1:
-            break_index = max_length
-
-        line1 = text[:break_index].strip()
-        line2 = text[break_index:].strip()
-
-        return f"{line1}\n{line2}"
 
 def create_sankey_df(
         df: pd.DataFrame,
