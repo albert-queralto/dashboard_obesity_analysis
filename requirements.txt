@@ -1,8 +1,8 @@
-numpy==1.26.1
-pandas==2.1.2
-setuptools==68.2.2
+numpy==2.3.2
+pandas==2.3.2
+setuptools==80.9.0
 bokeh==3.3.2
 flask==3.0.0
-pyarrow==14.0.2
+pyarrow==21.0.0
 holoviews==1.18.1
-gunicorn==21.2.0
+gunicorn==23.0.0
